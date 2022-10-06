@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom'
 const Login = () => {
     return (
         <body>
-            <div class="container">
+            <div className="container">
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
-                <Link th:to="@{/}">Home</Link>
+                <Link to="@{/}">Home</Link>
                 <h2>Login</h2>
-                <form action="#"
-                    th:action="@{/login}"
+                <form action="@{/login}"
                     method="POST">
                     <div>
                         <label for="email">Email</label>

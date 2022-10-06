@@ -4,7 +4,7 @@ const Error404 = () => {
     return (
         <body>
             <div>
-                <h1>Sorry, Post Not Found</h1>
+                <h1>Sorry, Post Not Found 404</h1>
                 <hr />
             </div>
         </body>

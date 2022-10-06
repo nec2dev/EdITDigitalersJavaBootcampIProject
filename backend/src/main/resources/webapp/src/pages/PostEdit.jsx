@@ -4,22 +4,22 @@ import { Link } from 'react-router-dom'
 const PostEdit = () => {
     return (
         <body>
-            <div class="container">
-                <Link th:to="@{/}">Home</Link>
+            <div className="container">
+                <Link to="@{/}">Home</Link>
                 <form action="#"
-                    th:action="@{'/posts/{id}'(id=${post.id})}"
-                    th:object="${post}"
+                    action="@{'/posts/{id}'(id=${post.id})}"
+                    object="${post}"
                     method="post">
-                    <input type="hidden" th:field="*{account}" />
-                    <input type="hidden" th:field="*{createdAt}" />
+                    <input type="hidden" field="*{account}" />
+                    <input type="hidden" field="*{createdAt}" />
                     <h2>Update Post</h2>
                     <div>
                         <label for="new-post-title">Title</label>
-                        <input id="new-post-title" type="text" th:field="*{title}" placeholder="Title" />
+                        <input id="new-post-title" type="text" field="*{title}" placeholder="Title" />
                     </div>
                     <div>
                         <label for="new-post-body">Body</label>
-                        <textarea id="new-post-body" th:field="*{body}"></textarea>
+                        <textarea id="new-post-body" field="*{body}"></textarea>
                     </div>
                     <button type="submit">Update Post</button>
                 </form>
