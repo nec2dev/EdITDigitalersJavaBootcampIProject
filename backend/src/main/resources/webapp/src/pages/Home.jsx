@@ -1,3 +1,6 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 const Home = () => {
     return (
         <body>
@@ -5,11 +8,11 @@ const Home = () => {
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
                 <ul>
-                    <li><a th:href="@{/posts/new}">New Post</a></li>
+                    <li><Link th:to="@{/posts/new}">New Post</Link></li>
                 </ul>
                 <div class="posts-container">
                     <div class="post" th:each="post : ${posts}">
-                        <h2><a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Title</a></h2>
+                        <h2><Link th:to="@{'/posts/' + ${post.id}}" th:text="${post.title}">Title</Link></h2>
                         <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
                         <h5 th:text="'Published at ' + ${post.createdAt}">Created At</h5>
                         <h5 th:text="'Updated at ' + ${post.updatedAt}">Updated At</h5>
@@ -18,8 +21,8 @@ const Home = () => {
                 </div>
                 <hr />
                 <ul sec:authorize="!isAuthenticated()">
-                    <li><a th:href="@{/register}">Register</a></li>
-                    <li><a th:href="@{/login}">Login</a></li>
+                    <li><Link th:to="@{/register}">Register</Link></li>
+                    <li><Link th:to="@{/login}">Login</Link></li>
                 </ul>
                 <div sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}"

@@ -1,7 +1,9 @@
+import React from 'react'
+
 const Error = () => {
     return (
         <body>
-            <div class="container">
+            <div>
                 <h1>Sorry, some kind of error happened!</h1>
                 <hr />
             </div>

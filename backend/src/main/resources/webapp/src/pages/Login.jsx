@@ -1,10 +1,13 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 const Login = () => {
     return (
         <body>
             <div class="container">
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
-                <a th:href="@{/}">Home</a>
+                <Link th:to="@{/}">Home</Link>
                 <h2>Login</h2>
                 <form action="#"
                     th:action="@{/login}"

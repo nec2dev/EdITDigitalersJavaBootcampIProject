@@ -1,7 +1,9 @@
+import React from 'react'
+
 const Error404 = () => {
     return (
         <body>
-            <div class="container">
+            <div>
                 <h1>Sorry, Post Not Found</h1>
                 <hr />
             </div>
