@@ -21,9 +21,9 @@ const AppRouter = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/posts/:id" element={<Post />} />
-            <Route path="/post/edit" element={<PostEdit />} />
+            <Route path="/post/:id/edit" element={<PostEdit />} />
             <Route path="/post/new" element={<PostNew />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/register" element={<SignUp />} />
             <Route path="/error" element={<Error />} />
             <Route exact path="*" element={<NotFound404 />} />
         </Routes>
