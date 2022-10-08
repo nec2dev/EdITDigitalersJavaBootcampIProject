@@ -87,8 +87,6 @@ public class PostController {
             authUsername = principal.getName();
         }
         if (post.getAccount().getEmail().compareToIgnoreCase(authUsername) < 0) {
-            // TODO: some kind of error?
-            // our account email on the Post not equal to current logged in account!
         }
         postService.save(post);
         return "redirect:/posts/" + post.getId();
@@ -98,9 +96,8 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     public String getPostForEdit(@PathVariable Long id, Model model) {
 
-        // find post by id
         Optional<Post> optionalPost = postService.getById(id);
-        // if post exist put it in model
+
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             model.addAttribute("post", post);

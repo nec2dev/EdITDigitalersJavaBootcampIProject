@@ -7,9 +7,9 @@ const Login = () => {
             <div className="container">
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
-                <Link to="@{/}">Home</Link>
+                <Link to="/">Home</Link>
                 <h2>Login</h2>
-                <form action="@{/login}"
+                <form action="/login"
                     method="POST">
                     <div>
                         <label for="email">Email</label>

@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navatar .brand-logo {
+  position: static;
+  margin-right: 12px;
+}

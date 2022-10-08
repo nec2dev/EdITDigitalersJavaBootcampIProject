@@ -5,9 +5,9 @@ const PostNew = () => {
     return (
         <body>
             <div className="container">
-                <Link to="@{/}">Home</Link>
-                <form action="#"
-                    action="@{'/posts/new'}"
+                <Link to="/">Home</Link>
+                <form 
+                    action="'/posts/new'"
                     object="${post}"
                     method="post">
                     <input type="hidden" field="*{account}" />

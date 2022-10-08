@@ -143,7 +143,7 @@ const Home = () => {
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
                 <ul>
-                    <li><Link to="@{/posts/new}">New Post</Link></li>
+                    <li><Link to="/posts/new">New Post</Link></li>
                 </ul>
                 <div className="posts-container">
                     <div className="post" each="post : ${posts}">
@@ -156,11 +156,11 @@ const Home = () => {
                 </div>
                 <hr />
                 <ul authorize="!isAuthenticated()">
-                    <li><Link to="@{/register}">Register</Link></li>
-                    <li><Link to="@{/login}">Login</Link></li>
+                    <li><Link to="/signup">Register</Link></li>
+                    <li><Link to="/login">Login</Link></li>
                 </ul>
                 <div authorize="isAuthenticated()">
-                    <form action="@{/logout}"
+                    <form action="/logout"
                         method="POST">
                         <div>
                             <label>Hi, <span authentication="name">Username</span></label>

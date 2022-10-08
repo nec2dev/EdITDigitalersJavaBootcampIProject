@@ -7,9 +7,9 @@ const SignUp = () => {
             <div className="container">
                 <h1>Spring Boot Blog Application</h1>
                 <hr />
-                <Link to="@{/}">Home</Link>
+                <Link to="/">Home</Link>
                 <h2>Register New Account</h2>
-                <form action="{/register}"
+                <form action="/signup"
                     object="${account}"
                     method="POST">
                     <div>

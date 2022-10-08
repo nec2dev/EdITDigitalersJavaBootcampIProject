@@ -5,7 +5,7 @@ const Post = () => {
     return (
         <body>
             <div className="container">
-                <Link to="@{/}">Home</Link>
+                <Link to="/">Home</Link>
                 <div className="post">
                     <h2 text="${post.title}">Title</h2>
                     <h5 text="'Created at ' + ${post.createdAt}">Created At</h5>
@@ -13,8 +13,8 @@ const Post = () => {
                     <p text="${post.body}">body text</p>
                 </div>
                 <ul authorize="isAuthenticated()">
-                    <li><Link to="@{'/posts/' + ${post.id} + '/edit'}">Edit</Link></li>
-                    <li><Link to="@{'/posts/' + ${post.id} + '/delete'}">Delete</Link></li>
+                    <li><Link to="/posts/ + ${post.id} + '/edit'}">Edit</Link></li>
+                    <li><Link to="/posts/ + ${post.id} + '/delete'}">Delete</Link></li>
                 </ul>
             </div>
         </body>

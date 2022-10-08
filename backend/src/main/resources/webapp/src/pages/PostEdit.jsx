@@ -5,9 +5,9 @@ const PostEdit = () => {
     return (
         <body>
             <div className="container">
-                <Link to="@{/}">Home</Link>
-                <form action="#"
-                    action="@{'/posts/{id}'(id=${post.id})}"
+                <Link to="/">Home</Link>
+                <form 
+                    action="/posts/{id}'(id=${post.id})"
                     object="${post}"
                     method="post">
                     <input type="hidden" field="*{account}" />
