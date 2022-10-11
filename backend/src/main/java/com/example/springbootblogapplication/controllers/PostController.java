@@ -13,25 +13,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+//import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.util.Optional;
 
 @Controller
+//@RestController
+// @RequestMapping("/posts/:id")
 public class PostController {
-
     @Autowired
     private PostService postService;
-
     @Autowired
     private AccountService accountService;
-
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
-
         // find post by id
         Optional<Post> optionalPost = this.postService.getById(id);
-
         // if post exists put it in model
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -41,33 +39,25 @@ public class PostController {
             return "404";
         }
     }
-
     @PostMapping("/posts/{id}")
     @PreAuthorize("isAuthenticated()")
     public String updatePost(@PathVariable Long id, Post post, BindingResult result, Model model) {
-
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
             Post existingPost = optionalPost.get();
-
             existingPost.setTitle(post.getTitle());
             existingPost.setBody(post.getBody());
-
             postService.save(existingPost);
         }
-
         return "redirect:/posts/" + post.getId();
     }
-
     @GetMapping("/posts/new")
     @PreAuthorize("isAuthenticated()")
     public String createNewPost(Model model, Principal principal) {
-
         String authUsername = "anonymousUser";
         if (principal != null) {
             authUsername = principal.getName();
         }
-
         Optional<Account> optionalAccount = accountService.findOneByEmail(authUsername);
         if (optionalAccount.isPresent()) {
             Post post = new Post();
@@ -78,7 +68,6 @@ public class PostController {
             return "redirect:/";
         }
     }
-
     @PostMapping("/posts/new")
     @PreAuthorize("isAuthenticated()")
     public String createNewPost(@ModelAttribute Post post, Principal principal) {
@@ -91,7 +80,6 @@ public class PostController {
         postService.save(post);
         return "redirect:/posts/" + post.getId();
     }
-
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("isAuthenticated()")
     public String getPostForEdit(@PathVariable Long id, Model model) {
@@ -106,11 +94,9 @@ public class PostController {
             return "404";
         }
     }
-
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePost(@PathVariable Long id) {
-
         // find post by id
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
@@ -122,5 +108,4 @@ public class PostController {
             return "404";
         }
     }
-
 }

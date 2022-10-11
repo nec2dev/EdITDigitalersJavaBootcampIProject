@@ -1,10 +1,9 @@
 package com.example.springbootblogapplication.controllers;
 
-import com.example.springbootblogapplication.models.Post;
-import com.example.springbootblogapplication.services.PostService;
+import com.example.springbootblogapplication.models.Account;
+import com.example.springbootblogapplication.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
@@ -12,14 +11,13 @@ import java.util.List;
 
 @Controller
 //@RestController
-//@RequestMapping("/")
-public class HomeController {
+//@RequestMapping("/api")
+public class AccountController {
     @Autowired
-    private PostService postService;
-    @GetMapping("/")
-    public String home(Model model) {
-        List<Post> posts = postService.getAll();
-        model.addAttribute("posts", posts);
-        return "home";
+    private AccountRepository accountRepository;
+
+    @GetMapping("/api/accounts")
+    public List<Account> fetchAccounts() {
+        return accountRepository.findAll();
     }
 }

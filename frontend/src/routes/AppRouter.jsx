@@ -5,11 +5,12 @@ import NavBar from '../components/NavBar/NavBar';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Post from '../pages/Post';
-import Error from '../pages/Error';
 import PostEdit from '../pages/PostEdit';
 import PostNew from '../pages/PostNew';
 import SignUp from '../pages/SignUp';
+import AccountFunctional from '../functionals/AccountFunctional';
 import NotFound404 from '../pages/Error404';
+import Error from '../pages/Error';
 import Footer from '../components/Footer/Footer';
 
 const AppRouter = () => {
@@ -24,6 +25,7 @@ const AppRouter = () => {
             <Route path="/post/:id/edit" element={<PostEdit />} />
             <Route path="/post/new" element={<PostNew />} />
             <Route path="/register" element={<SignUp />} />
+            <Route path="/api/accounts" element={<AccountFunctional />} />
             <Route path="/error" element={<Error />} />
             <Route exact path="*" element={<NotFound404 />} />
         </Routes>
