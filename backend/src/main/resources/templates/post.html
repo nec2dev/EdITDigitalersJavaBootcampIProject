@@ -1,27 +1,378 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog :: Post</title>
-</head>
-<body>
-    <div class="container">
-        <a th:href="@{/}">Home</a>
-        <div class="post">
-            <h2 th:text="${post.title}">Title</h2>
-            <h5 th:text="'Created at ' + ${post.createdAt}">Created At</h5>
-            <h5 th:text="'Updated at ' + ${post.updatedAt}">Updated At</h5>
-            <p th:text="${post.body}">body text</p>
-        </div>
-        <ul sec:authorize="isAuthenticated()">
-            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
-            <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
-        </ul>
-    </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .blog-page .single_post {
+            -webkit-transition: all .4s ease;
+            transition: all .4s ease
+        }
 
+        .blog-page .single_post .img-post {
+            position: relative;
+            overflow: hidden;
+            max-height: 500px
+        }
+
+        .blog-page .single_post .img-post>img {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+            -webkit-transition: -webkit-transform .4s ease, opacity .4s ease;
+            transition: transform .4s ease, opacity .4s ease;
+            max-width: 100%;
+            filter: none;
+            -webkit-filter: grayscale(0);
+            -webkit-transform: scale(1.01)
+        }
+
+        .blog-page .single_post .img-post:hover img {
+            -webkit-transform: scale(1.02);
+            -ms-transform: scale(1.02);
+            transform: scale(1.02);
+            opacity: .7;
+            filter: gray;
+            -webkit-filter: grayscale(1);
+            -webkit-transition: all .8s ease-in-out
+        }
+
+        .blog-page .single_post .img-post:hover .social_share {
+            display: block
+        }
+
+        .blog-page .single_post .img-post .social_share {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: none
+        }
+
+        .blog-page .single_post .meta {
+            list-style: none;
+            padding: 0;
+            margin: 0
+        }
+
+        .blog-page .single_post .meta li {
+            display: inline-block;
+            margin-right: 15px
+        }
+
+        .blog-page .single_post .meta li a {
+            color: #959595;
+            text-decoration: none;
+        }
+
+        .blog-page .single_post .meta li a i {
+            margin-right: 6px;
+        }
+
+        .blog-page .single_post h3 {
+            line-height: 26px;
+            -webkit-transition: color .4s ease;
+            transition: color .4s ease
+        }
+
+        .blog-page .single_post h3 a {
+            color: #242424;
+            text-decoration: none
+        }
+
+
+        .blog-page .single_post .blockquote p {
+            margin-top: 0 !important
+        }
+
+        .blog-page .right-box .categories-clouds li {
+            display: inline-block;
+            margin-bottom: 5px
+        }
+
+        .blog-page .right-box .categories-clouds li a {
+            display: block;
+            border: 1px solid #ccc;
+            padding: 6px 10px;
+            border-radius: 3px;
+            color: #242424
+        }
+
+        .blog-page .right-box .instagram-plugin {
+            overflow: hidden
+        }
+
+        .blog-page .right-box .instagram-plugin li {
+            float: left;
+            overflow: hidden;
+            border: 1px solid #fff
+        }
+
+        .blog-page .comment-reply li {
+            margin-bottom: 15px
+        }
+
+        .blog-page .comment-reply li:last-child {
+            margin-bottom: none
+        }
+
+        .blog-page .comment-reply li p {
+            margin-bottom: 0px;
+            color: #777
+        }
+
+        .blog-page .comment-reply .list-inline li {
+            display: inline-block;
+            margin: 0;
+            padding-right: 20px
+        }
+
+
+        .page.with-sidebar.right .left-box {
+            margin-right: -20px
+        }
+
+        @media (max-width: 414px) {
+            .section.blog-page {
+                padding: 20px 0
+            }
+
+            .blog-page .left-box .single-comment-box>ul>li {
+                padding: 25px 0
+            }
+
+            .blog-page .left-box .single-comment-box ul li .icon-box {
+                display: inline-block
+            }
+
+            .blog-page .left-box .single-comment-box ul li .text-box {
+                display: block;
+                padding-left: 0;
+                margin-top: 10px
+            }
+        }
+
+        .card {
+            background: #fff;
+            margin-bottom: 30px;
+            transition: .5s;
+            border: 0;
+            border-radius: .55rem;
+            position: relative;
+            width: 100%;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .card .body {
+            color: #424242;
+            padding: 20px;
+            font-weight: 400;
+        }
+
+        .card .header {
+            color: #424242;
+            padding: 20px;
+            position: relative;
+            box-shadow: none;
+        }
+
+        .card .header h2 {
+            color: #757575;
+            position: relative;
+        }
+
+        .card .header h2:before {
+            background: #a27ce6;
+        }
+
+        .card .header h2::before {
+            position: absolute;
+            width: 20px;
+            height: 1px;
+            left: 0;
+            top: -20px;
+            content: '';
+        }
+
+        .m-b-15 {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body class="bg-secondary">
+    <header class="bg-primary">
+        <div class="container">
+            <div class="blue-grey bg-primary text-light">
+                <div class="nav-wrapper container d-flex justify-content-between">
+                    <img src="https://i.postimg.cc/Qtc31XYY/logo.png" title="logo" class="mt-3 w-25" />
+                    <div class="">
+                        <ul sec:authorize="!isAuthenticated()" id="avatar" class="right list-unstyled d-block">
+                            <li><img class="rm-3 w-50" src="https://i.postimg.cc/mcyJqg0b/user.png" title="user"></li>
+                            <li class="list-unstyled gap-3 "><a class="btn btn-dark m-1 text-light text-decoration-none"
+                                    th:href="@{/register}">Register</a><a
+                                    class="btn btn-dark m-1 text-light text-decoration-none"
+                                    th:href="@{/login}">Login</a></li>
+                        </ul>
+                        <div sec:authorize="isAuthenticated()">
+                            <form th:action="@{/logout}" method="POST">
+                                <img class="rm-3 w-50" src='https://i.postimg.cc/bJ0kXNYD/user-Authenticated.png'>
+                                <div>
+                                    <label>Hi, <span sec:authentication="name">Username</span></label>
+                                </div>
+                                <button type="submit" class="btn btn-dark">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                        <button class="btn btn-dark" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container blog-page">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12">
+                <div class="card single_post my-4">
+                    <div class="header">
+                        <h2><strong>Latest</strong> Post</h2>
+                    </div>
+                    <div class="body">
+                        <h3 th:text="${post.title}" class="m-t-0 m-b-5"><a href="blog-details.html">Apple Introduces
+                                Search Ads Basic</a></h3>
+                        <ul class="meta">
+                            <li><a href="javascript:void(0);"><i class="fab fa-account col-blue"></i>Posted By: <span
+                                        sec:authentication="name">Username</span></a></li>
+                            <li><a href="javascript:void(0);"><i class="fab fa-label col-amber"></i>Technology</a></li>
+                            <li><a href="javascript:void(0);"><i class="fab fa-comment-text col-blue"></i>Comments:
+                                    3</a></li>
+                            <li th:text="'Created at ' + ${post.createdAt}">Created At</li>
+                            <li th:text="'Updated at ' + ${post.updatedAt}">Updated At</li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div class="img-post m-b-15">
+                            <img src="https://mdbootstrap.com/img/new/standard/nature/023.jpg"
+                                class="img-fluid w-100" />
+                            <div class="social_share">
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                        class="fab fa-facebook"></i></button>
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                        class="fab fa-twitter"></i></button>
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i
+                                        class="fab fa-instagram"></i></button>
+                            </div>
+                        </div>
+                        <p th:text="${post.body}">body text</p>
+                        <ul sec:authorize="isAuthenticated()">
+                            <li class="list-unstyled gap-3 "><a class="btn btn-dark"
+                                    th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a><a class="btn btn-dark"
+                                    th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer class="container">
+        <div class="py-5">
+            <div class="row">
+                <div class="col-2">
+                    <h5>Section</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-2">
+                    <h5>Section</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-2">
+                    <h5>Section</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-light">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 offset-1">
+                    <form>
+                        <h5>Subscribe to our newsletter</h5>
+                        <p>Monthly digest of whats new and exciting from us.</p>
+                        <div class="d-flex w-100 gap-2">
+                            <label for="newsletter1" class="visually-hidden">Email address</label>
+                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between py-4 my-4 border-top">
+                <p>© 2022 nec2solutions, Inc. All rights reserved.</p>
+                <ul class="list-unstyled d-flex">
+                    <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use href="#twitter"></use>
+                            </svg></a></li>
+                    <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use href="#instagram"></use>
+                            </svg></a></li>
+                    <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use href="#facebook"></use>
+                            </svg></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
